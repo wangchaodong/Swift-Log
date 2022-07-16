@@ -1,7 +1,5 @@
 # Log
 
-A description of this package.
-
 A simple Log tool for swift.
 
 ## Usage
@@ -14,11 +12,6 @@ Log.log("dealloc", marker: .dealloc)
 Log.error("error")
 Log.success("success")
 Log.warning("warning")
-Log.config.handler = { msg in
-    // handle log message, such as cache log message, or show message alert
-
-}
-
 /** 
 2022-07-16 02:39:01.283 FileIO.test():38 🟢 ✅ hello world!
 2022-07-16 02:39:01.284 FileIO.test():39 🟢 🐛 debug
@@ -29,4 +22,29 @@ Log.config.handler = { msg in
 2022-07-16 02:39:01.287 FileIO.test():44 🟢 👍🏻 success
 2022-07-16 02:39:01.287 FileIO.test():45 🟢 ⚠️ warning
 */
+```
+### Config
+```
+Log.config.twoLine = true
+Log.config.Xcode = .all
+Log.config.dateFormat = "HH:mm:ss.SSS"
+Log.config.queue = Thread.isMainThread ? "main" : "global"
+Log.config.handler = { msg in
+    // handle log message, such as cache log message, or show message alert
+    // but should not use log function (Log.log,Log.error...) in here which will cause circle reference
+
+}
+
+// or
+let config = Log.LogConfig(
+    queue: Thread.isMainThread ? "main😀" : "global😎",
+    dateFormat: "HH:mm:ss.SSS",
+    itemsSeparator: "--",
+    twoLine: false,
+    terminator: "\n",
+    Xcode: .debug,
+    handler: { logMessage in
+        // do some thing, but should not use log function (Log.log,Log.error...) in here which will cause circle reference
+    })
+Log.config = config
 ```

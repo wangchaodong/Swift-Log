@@ -52,7 +52,7 @@ extension Log {
 
     public enum ThreadMarker: String {
         case main = "🟢"
-        case background = "⛓"
+        case global = "⛓"
     }
 
     public enum XcodeConfig {
@@ -62,13 +62,13 @@ extension Log {
     }
 
     public struct LogConfig {
-        public let queue: String = Thread.isMainThread ? ThreadMarker.main.rawValue : ThreadMarker.background.rawValue
+        public var queue: String = Thread.isMainThread ? ThreadMarker.main.rawValue : ThreadMarker.global.rawValue
 
         public var dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
 
         public var itemsSeparator: String = " "
 
-        public var twoLine: Bool = true
+        public var twoLine: Bool = false
         public var lineSeparator: String {
             if twoLine {
                 return "\n"
@@ -87,7 +87,7 @@ extension Log {
             LogConfig(
                 dateFormat: "yyyy-MM-dd HH:mm:ss.SSS",
                 itemsSeparator: " ",
-                twoLine: true,
+                twoLine: false,
                 terminator: "\n",
                 Xcode: .debug,
                 handler: nil
@@ -128,7 +128,7 @@ public class Log {
 
         let dateString: String = formatter.string(from: Date())
 
-        let prefix: String = "\(config.queue) \(dateString) \(fileDesc) "
+        let prefix: String = "\(dateString) \(fileDesc) \(config.queue) "
 
         let message: String = items.map { "\($0)" }.joined(separator: config.itemsSeparator)
 
