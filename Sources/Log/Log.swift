@@ -20,7 +20,7 @@ import Foundation
  */
 
 extension Log {
-    public enum LogMarker: String {
+    public enum Marker: String {
         case standard = "✅"
         case info = "🗂"
         case debug = "🐛"
@@ -61,7 +61,7 @@ extension Log {
         case all
     }
 
-    public struct LogConfig {
+    public struct Config {
         public var queue: String = Thread.isMainThread ? ThreadMarker.main.rawValue : ThreadMarker.global.rawValue
 
         public var dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
@@ -83,8 +83,8 @@ extension Log {
 
         public var handler: ((String) -> ())? = nil
 
-        public static var `default`: LogConfig {
-            LogConfig(
+        public static var `default`: Config {
+            Config(
                 dateFormat: "yyyy-MM-dd HH:mm:ss.SSS",
                 itemsSeparator: " ",
                 twoLine: false,
@@ -97,7 +97,7 @@ extension Log {
 }
 
 public class Log {
-    public static var config = LogConfig.default
+    public static var config = Config.default
 
     private static var formatter: DateFormatter {
         let formatter = DateFormatter()
@@ -105,7 +105,7 @@ public class Log {
         return formatter
     }
 
-    fileprivate static func Logging(_ items: [Any], marker: LogMarker, file: String, function: String, line: Int) {
+    fileprivate static func Logging(_ items: [Any], marker: Marker, file: String, function: String, line: Int) {
         switch config.Xcode {
         case .debug:
 #if DEBUG
@@ -120,7 +120,7 @@ public class Log {
         }
     }
 
-    fileprivate static func makeLog(_ items: [Any], marker: LogMarker, file: String, function: String, line: Int) {
+    fileprivate static func makeLog(_ items: [Any], marker: Marker, file: String, function: String, line: Int) {
         let lastSlashIndex: (String.Index) = (file.lastIndex(of: "/") ?? String.Index(utf16Offset: 0, in: file))
         let nextIndex: String.Index = file.index(after: lastSlashIndex)
         let filename: String = file.suffix(from: nextIndex).replacingOccurrences(of: ".swift", with: "")
@@ -144,34 +144,34 @@ public class Log {
 }
 
 extension Log {
-    public static func log(_ items: Any..., marker: LogMarker = .standard, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func log(_ items: Any..., marker: Marker = .standard, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func debug(_ items: Any..., marker: LogMarker = .debug, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func debug(_ items: Any..., marker: Marker = .debug, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func info(_ items: Any..., marker: LogMarker = .info, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func info(_ items: Any..., marker: Marker = .info, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func warning(_ items: Any..., marker: LogMarker = .warning, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func warning(_ items: Any..., marker: Marker = .warning, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func error(_ items: Any..., marker: LogMarker = .error, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func error(_ items: Any..., marker: Marker = .error, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func success(_ items: Any..., marker: LogMarker = .success, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func success(_ items: Any..., marker: Marker = .success, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func fail(_ items: Any..., marker: LogMarker = .fail, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func fail(_ items: Any..., marker: Marker = .fail, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func network(_ items: Any..., marker: LogMarker = .network, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func network(_ items: Any..., marker: Marker = .network, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func request(_ items: Any..., marker: LogMarker = .request, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func request(_ items: Any..., marker: Marker = .request, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
-    public static func response(_ items: Any..., marker: LogMarker = .response, file: String = #file, line: Int = #line, function: String = #function) {
+    public static func response(_ items: Any..., marker: Marker = .response, file: String = #file, line: Int = #line, function: String = #function) {
         Logging(items, marker: marker, file: file, function: function, line: line)
     }
 }

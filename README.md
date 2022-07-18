@@ -36,7 +36,7 @@ Log.config.handler = { msg in
 }
 
 // or
-let config = Log.LogConfig(
+let config = Log.Config(
     queue: Thread.isMainThread ? "main😀" : "global😎",
     dateFormat: "HH:mm:ss.SSS",
     itemsSeparator: "--",
